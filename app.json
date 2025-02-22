@@ -1,6 +1,6 @@
 {
-  "name": "BrainGame",
-  "displayName": "BrainGame",
+  "name": "braingame",
+  "displayName": "braingame",
   "react-native-google-mobile-ads": {
     "android_app_id": "ca-app-pub-2213986178919906~7787043605"
   }

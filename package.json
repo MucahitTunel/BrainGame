@@ -1,5 +1,5 @@
 {
-  "name": "BrainGame",
+  "name": "braingame",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.0",
+    "@react-native-firebase/app": "^21.11.0",
+    "@react-native-firebase/crashlytics": "^21.11.0",
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
     "react": "18.3.1",

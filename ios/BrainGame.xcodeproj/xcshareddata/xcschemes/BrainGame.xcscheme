@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "BrainGame.app"
-               BlueprintName = "BrainGame"
-               ReferencedContainer = "container:BrainGame.xcodeproj">
+               BuildableName = "braingame.app"
+               BlueprintName = "braingame"
+               ReferencedContainer = "container:braingame.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "BrainGameTests.xctest"
-               BlueprintName = "BrainGameTests"
-               ReferencedContainer = "container:BrainGame.xcodeproj">
+               BuildableName = "braingameTests.xctest"
+               BlueprintName = "braingameTests"
+               ReferencedContainer = "container:braingame.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "BrainGame.app"
-            BlueprintName = "BrainGame"
-            ReferencedContainer = "container:BrainGame.xcodeproj">
+            BuildableName = "braingame.app"
+            BlueprintName = "braingame"
+            ReferencedContainer = "container:braingame.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "BrainGame.app"
-            BlueprintName = "BrainGame"
-            ReferencedContainer = "container:BrainGame.xcodeproj">
+            BuildableName = "braingame.app"
+            BlueprintName = "braingame"
+            ReferencedContainer = "container:braingame.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

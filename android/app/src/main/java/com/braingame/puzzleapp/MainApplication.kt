@@ -1,4 +1,4 @@
-package com.braingame
+package com.braingame.puzzleapp
 
 import android.app.Application
 import com.facebook.react.PackageList

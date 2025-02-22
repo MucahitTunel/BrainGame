@@ -1,5 +1,5 @@
 import React from 'react';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { AD_IDS } from '../../services/ads/config';
 
 const BannerAds = () => {

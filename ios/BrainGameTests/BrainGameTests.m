@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface BrainGameTests : XCTestCase
+@interface braingameTests : XCTestCase
 
 @end
 
-@implementation BrainGameTests
+@implementation braingameTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

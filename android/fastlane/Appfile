@@ -1,2 +1,2 @@
 json_key_file("/Users/mucahittunel/Mobile/__secrets__/braingame-451711-bb95d62aabaf.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
-package_name("com.braingame") # e.g. com.krausefx.app
+package_name("com.braingame.puzzleapp") # e.g. com.krausefx.app

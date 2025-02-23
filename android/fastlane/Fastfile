@@ -21,18 +21,34 @@ platform :android do
     gradle(task: "test")
   end
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
+  # desc "Submit a new Beta Build to Crashlytics Beta"
+  # lane :beta do
+  #   gradle(task: "clean assembleRelease")
+  #   crashlytics
   
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
-  end
+  #   # sh "your_script.sh"
+  #   # You can also use other beta testing services here
+  # end
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do
+
+    # increment version code
+    increment_version_code(
+      gradle_file_path: "android/app/build.gradle",
+    )
+    increment_version_name(
+      gradle_file_path: "android/app/build.gradle",
+    )
+
+    # Build the release bundle
     gradle(task: "clean assembleRelease")
-    upload_to_play_store
+
+    # Upload to Google Play
+    supply(
+      track: 'production',
+      aab: 'android/app/build/outputs/bundle/release/app-release.aab',
+      rollout: '0.5'
+    )
   end
 end

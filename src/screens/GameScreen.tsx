@@ -16,6 +16,7 @@ import { useInterstitialAds } from '../hooks/useInterstitialAds';
 import BannerAds from '../components/Ads/BannerAds';
 import WinDialog from '../components/WinDialog';
 import TutorialDialog from '../components/TutorialDialog';
+import { useRewardedAds } from '../hooks/useRewardedAds';
 
 type GameScreenNavigationProp = NativeStackNavigationProp<
     RootStackParamList,
@@ -44,6 +45,7 @@ const GameScreen = () => {
     const [selectedTile, setSelectedTile] = useState<Position>(null);
     const [showWinDialog, setShowWinDialog] = useState(false);
     const [showTutorial, setShowTutorial] = useState(false);
+    const [showSums, setShowSums] = useState(false);
 
     // Initialize grid with random numbers
     useEffect(() => {
@@ -216,23 +218,220 @@ const GameScreen = () => {
         setShowExitAlert(true);
     };
 
-    const tileSize = (Dimensions.get('window').width - SIZES.padding * 4) / size;
+    const screenWidth = Dimensions.get('window').width;
+    const containerWidth = screenWidth - SIZES.padding * 4;
+    const tileSize = containerWidth / (size + (showSums ? 1 : 0));
+    const margin = 2;
 
     const isTileSelected = (row: number, col: number) => {
         return selectedTile?.row === row && selectedTile?.col === col;
     };
+
+    const handleReward = useCallback(() => {
+        setShowSums(true);
+    }, []);
+
+    const { showRewardedAd, isLoaded } = useRewardedAds(handleReward);
+
+    const calculateRowSum = (rowIndex: number) => {
+        return grid[rowIndex].reduce((sum, num) => sum + num, 0);
+    };
+
+    const calculateColSum = (colIndex: number) => {
+        return grid.reduce((sum, row) => sum + row[colIndex], 0);
+    };
+
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: COLORS.background,
+        },
+        content: {
+            flex: 1,
+            padding: SIZES.padding,
+        },
+        header: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: SIZES.margin * 2,
+        },
+        timer: {
+            ...FONTS.h2,
+            color: COLORS.primary,
+        },
+        exitButton: {
+            backgroundColor: COLORS.warning,
+            paddingHorizontal: SIZES.padding,
+            paddingVertical: SIZES.padding / 2,
+            borderRadius: SIZES.radius,
+            ...SHADOWS.small,
+        },
+        exitButtonText: {
+            ...FONTS.h3,
+            color: COLORS.text,
+        },
+        gridContainer: {
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+            width: containerWidth,
+            alignSelf: 'center',
+        },
+        rowContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+        },
+        row: {
+            flexDirection: 'row',
+        },
+        tile: {
+            backgroundColor: COLORS.card,
+            margin: margin,
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: tileSize - margin * 2,
+            height: tileSize - margin * 2,
+            borderRadius: SIZES.radius / 2,
+            ...SHADOWS.small,
+        },
+        selectedTile: {
+            backgroundColor: COLORS.primary,
+            borderWidth: 2,
+            borderColor: COLORS.secondary,
+        },
+        tileText: {
+            ...FONTS.h2,
+            color: COLORS.text,
+            fontSize: Math.min(FONTS.h2.fontSize, tileSize / 2.5),
+        },
+        selectedTileText: {
+            color: COLORS.background,
+        },
+        alertOverlay: {
+            ...StyleSheet.absoluteFillObject,
+            backgroundColor: COLORS.overlay,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        alertContainer: {
+            backgroundColor: COLORS.background,
+            borderRadius: SIZES.radius,
+            padding: SIZES.padding * 2,
+            width: '80%',
+            ...SHADOWS.medium,
+        },
+        alertTitle: {
+            ...FONTS.h2,
+            color: COLORS.text,
+            textAlign: 'center',
+            marginBottom: SIZES.margin,
+        },
+        alertMessage: {
+            ...FONTS.body,
+            color: COLORS.text,
+            textAlign: 'center',
+            marginBottom: SIZES.margin * 2,
+        },
+        alertButtons: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            gap: SIZES.margin,
+        },
+        alertButton: {
+            flex: 1,
+            paddingVertical: SIZES.padding,
+            borderRadius: SIZES.radius,
+            alignItems: 'center',
+        },
+        alertCancelButton: {
+            backgroundColor: COLORS.warning,
+        },
+        alertConfirmButton: {
+            backgroundColor: COLORS.success,
+        },
+        alertButtonText: {
+            ...FONTS.h3,
+            color: COLORS.background,
+        },
+        infoText: {
+            ...FONTS.body,
+            color: COLORS.secondary,
+            textAlign: 'center',
+            marginBottom: SIZES.margin * 2,
+        },
+        headerButtons: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: SIZES.margin,
+        },
+        iconButton: {
+            backgroundColor: COLORS.primary,
+            padding: SIZES.padding / 2,
+            borderRadius: SIZES.radius,
+            ...SHADOWS.small,
+        },
+        disabledButton: {
+            opacity: 0.5,
+        },
+        sumContainer: {
+            justifyContent: 'center',
+            alignItems: 'center',
+            margin: margin,
+            width: tileSize - margin * 2,
+            height: tileSize - margin * 2,
+            backgroundColor: COLORS.card,
+            borderRadius: SIZES.radius / 2,
+            ...SHADOWS.small,
+        },
+        columnSums: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginTop: 2,
+            width: '100%',
+            justifyContent: 'flex-start',
+            paddingLeft: 0,
+        },
+        sumText: {
+            ...FONTS.h2,
+            textAlign: 'center',
+            color: COLORS.text,
+            fontSize: Math.min(FONTS.h2.fontSize, tileSize / 2.5),
+        },
+        correctSum: {
+            color: COLORS.success,
+            fontWeight: 'bold',
+        },
+        incorrectSum: {
+            color: COLORS.warning,
+        },
+        iconText: {
+            fontSize: 20,
+        },
+    });
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.header}>
                     <Text style={styles.timer}>{formatTime(timer)}</Text>
-                    <TouchableOpacity
-                        style={styles.exitButton}
-                        onPress={handleExit}
-                    >
-                        <Text style={styles.exitButtonText}>Çıkış</Text>
-                    </TouchableOpacity>
+                    <View style={styles.headerButtons}>
+                        {!showSums && (
+                            <TouchableOpacity
+                                style={[styles.iconButton, !isLoaded && styles.disabledButton]}
+                                onPress={showRewardedAd}
+                                disabled={!isLoaded}
+                            >
+                                <Text style={styles.iconText}>💡</Text>
+                            </TouchableOpacity>
+                        )}
+                        <TouchableOpacity
+                            style={styles.exitButton}
+                            onPress={handleExit}
+                        >
+                            <Text style={styles.exitButtonText}>Çıkış</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 <Text style={styles.infoText}>
@@ -241,30 +440,52 @@ const GameScreen = () => {
 
                 <View style={styles.gridContainer}>
                     {grid.map((row, rowIndex) => (
-                        <View key={rowIndex} style={styles.row}>
-                            {row.map((number, colIndex) => (
-                                <TouchableOpacity
-                                    key={colIndex}
-                                    style={[
-                                        styles.tile,
-                                        {
-                                            width: tileSize,
-                                            height: tileSize,
-                                        },
-                                        isTileSelected(rowIndex, colIndex) && styles.selectedTile,
-                                    ]}
-                                    onPress={() => handleTilePress(rowIndex, colIndex)}
-                                >
+                        <View key={rowIndex} style={styles.rowContainer}>
+                            <View style={styles.row}>
+                                {row.map((number, colIndex) => (
+                                    <TouchableOpacity
+                                        key={colIndex}
+                                        style={[
+                                            styles.tile,
+                                            isTileSelected(rowIndex, colIndex) && styles.selectedTile,
+                                        ]}
+                                        onPress={() => handleTilePress(rowIndex, colIndex)}
+                                    >
+                                        <Text style={[
+                                            styles.tileText,
+                                            isTileSelected(rowIndex, colIndex) && styles.selectedTileText
+                                        ]}>
+                                            {number}
+                                        </Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                            {showSums && (
+                                <View style={styles.sumContainer}>
                                     <Text style={[
-                                        styles.tileText,
-                                        isTileSelected(rowIndex, colIndex) && styles.selectedTileText
+                                        styles.sumText,
+                                        calculateRowSum(rowIndex) === size * 10 ? styles.correctSum : styles.incorrectSum
                                     ]}>
-                                        {number}
+                                        {calculateRowSum(rowIndex)}
                                     </Text>
-                                </TouchableOpacity>
-                            ))}
+                                </View>
+                            )}
                         </View>
                     ))}
+                    {showSums && (
+                        <View style={styles.columnSums}>
+                            {Array(size).fill(0).map((_, colIndex) => (
+                                <View key={colIndex} style={[styles.sumContainer, { marginLeft: colIndex === 0 ? 2 : 2 }]}>
+                                    <Text style={[
+                                        styles.sumText,
+                                        calculateColSum(colIndex) === size * 10 ? styles.correctSum : styles.incorrectSum
+                                    ]}>
+                                        {calculateColSum(colIndex)}
+                                    </Text>
+                                </View>
+                            ))}
+                        </View>
+                    )}
                 </View>
             </View>
 
@@ -315,117 +536,5 @@ const GameScreen = () => {
         </SafeAreaView>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.background,
-    },
-    content: {
-        flex: 1,
-        padding: SIZES.padding,
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: SIZES.margin * 2,
-    },
-    timer: {
-        ...FONTS.h2,
-        color: COLORS.primary,
-    },
-    exitButton: {
-        backgroundColor: COLORS.warning,
-        paddingHorizontal: SIZES.padding,
-        paddingVertical: SIZES.padding / 2,
-        borderRadius: SIZES.radius,
-        ...SHADOWS.small,
-    },
-    exitButtonText: {
-        ...FONTS.h3,
-        color: COLORS.text,
-    },
-    gridContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1,
-    },
-    row: {
-        flexDirection: 'row',
-    },
-    tile: {
-        backgroundColor: COLORS.card,
-        margin: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: SIZES.radius / 2,
-        ...SHADOWS.small,
-    },
-    selectedTile: {
-        backgroundColor: COLORS.primary,
-        borderWidth: 2,
-        borderColor: COLORS.secondary,
-    },
-    tileText: {
-        ...FONTS.h2,
-        color: COLORS.text,
-    },
-    selectedTileText: {
-        color: COLORS.background,
-    },
-    alertOverlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: COLORS.overlay,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    alertContainer: {
-        backgroundColor: COLORS.background,
-        borderRadius: SIZES.radius,
-        padding: SIZES.padding * 2,
-        width: '80%',
-        ...SHADOWS.medium,
-    },
-    alertTitle: {
-        ...FONTS.h2,
-        color: COLORS.text,
-        textAlign: 'center',
-        marginBottom: SIZES.margin,
-    },
-    alertMessage: {
-        ...FONTS.body,
-        color: COLORS.text,
-        textAlign: 'center',
-        marginBottom: SIZES.margin * 2,
-    },
-    alertButtons: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        gap: SIZES.margin,
-    },
-    alertButton: {
-        flex: 1,
-        paddingVertical: SIZES.padding,
-        borderRadius: SIZES.radius,
-        alignItems: 'center',
-    },
-    alertCancelButton: {
-        backgroundColor: COLORS.warning,
-    },
-    alertConfirmButton: {
-        backgroundColor: COLORS.success,
-    },
-    alertButtonText: {
-        ...FONTS.h3,
-        color: COLORS.background,
-    },
-    infoText: {
-        ...FONTS.body,
-        color: COLORS.secondary,
-        textAlign: 'center',
-        marginBottom: SIZES.margin * 2,
-    },
-});
 
 export default GameScreen; 

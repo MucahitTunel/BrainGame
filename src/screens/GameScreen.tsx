@@ -235,6 +235,10 @@ const GameScreen = () => {
                     </TouchableOpacity>
                 </View>
 
+                <Text style={styles.infoText}>
+                    Her satır ve sütunun toplamı {size * 10} olmalı
+                </Text>
+
                 <View style={styles.gridContainer}>
                     {grid.map((row, rowIndex) => (
                         <View key={rowIndex} style={styles.row}>
@@ -415,6 +419,12 @@ const styles = StyleSheet.create({
     alertButtonText: {
         ...FONTS.h3,
         color: COLORS.background,
+    },
+    infoText: {
+        ...FONTS.body,
+        color: COLORS.secondary,
+        textAlign: 'center',
+        marginBottom: SIZES.margin * 2,
     },
 });
 

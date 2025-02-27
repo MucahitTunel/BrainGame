@@ -33,21 +33,13 @@ platform :android do
   desc "Deploy a new version to the Google Play"
   lane :deploy do
 
-    # increment version code
-    increment_version_code(
-      gradle_file_path: "android/app/build.gradle",
-    )
-    increment_version_name(
-      gradle_file_path: "android/app/build.gradle",
-    )
-
     # Build the release bundle
-    gradle(task: "clean assembleRelease")
+    # gradle(task: "clean bundleRelease")
 
     # Upload to Google Play
     supply(
       track: 'production',
-      aab: 'android/app/build/outputs/bundle/release/app-release.aab',
+      aab: '/Users/mucahittunel/Mobile/Projects/BrainGame/android/app/build/outputs/bundle/release/app-release.aab',
       rollout: '0.5'
     )
   end

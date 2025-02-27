@@ -53,7 +53,7 @@ const SplashScreen = () => {
           },
         ]}
       >
-        <Text style={styles.logoText}>Brain Game</Text>
+        <Text style={styles.logoText}>Zeka Oyunu</Text>
         <Text style={styles.subText}>Zihninizi Eğitin</Text>
       </Animated.View>
     </View>

@@ -10,6 +10,16 @@ export const useRewardedAds = (onRewarded: () => void) => {
         const adUnitId = __DEV__ ? TestIds.REWARDED : AD_IDS.REWARDED || '';
         const rewarded = RewardedAd.createForAdRequest(adUnitId, {
             requestNonPersonalizedAdsOnly: true,
+            keywords: [
+                'puzzle',
+                'game',
+                'brain',
+                'puzzle',
+                'brain',
+                'kids',
+                'fun',
+                'learning'
+            ],
         });
 
         const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {

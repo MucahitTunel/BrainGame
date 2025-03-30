@@ -1,8 +1,14 @@
-import MobileAds from "react-native-google-mobile-ads"
+import MobileAds, { MaxAdContentRating } from "react-native-google-mobile-ads"
 
 export const initializeAds = async () => {
     try {
-        MobileAds().initialize();
+        MobileAds().setRequestConfiguration({
+            maxAdContentRating: MaxAdContentRating.G,
+            tagForChildDirectedTreatment: true,
+            tagForUnderAgeOfConsent: true,
+        }).then(() => {
+            MobileAds().initialize();
+        })
     } catch (error) {
         // console.log(error);
     }

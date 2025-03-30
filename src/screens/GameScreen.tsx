@@ -366,9 +366,10 @@ const GameScreen = () => {
             gap: SIZES.margin,
         },
         iconButton: {
-            backgroundColor: COLORS.primary,
             padding: SIZES.padding / 2,
             borderRadius: SIZES.radius,
+            backgroundColor: COLORS.card,
+            position: 'relative',
             ...SHADOWS.small,
         },
         disabledButton: {
@@ -406,7 +407,22 @@ const GameScreen = () => {
             color: COLORS.warning,
         },
         iconText: {
-            fontSize: 20,
+            fontSize: 22,
+        },
+        adIcon: {
+            position: 'absolute',
+            bottom: -8,
+            right: -8,
+            width: 24,
+            height: 24,
+            borderRadius: 8,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        adIconText: {
+            fontSize: 12,
+            color: COLORS.background,
+            lineHeight: 16,
         },
     });
 
@@ -416,15 +432,16 @@ const GameScreen = () => {
                 <View style={styles.header}>
                     <Text style={styles.timer}>{formatTime(timer)}</Text>
                     <View style={styles.headerButtons}>
-                        {!showSums && (
-                            <TouchableOpacity
-                                style={[styles.iconButton, !isLoaded && styles.disabledButton]}
-                                onPress={showRewardedAd}
-                                disabled={!isLoaded}
-                            >
-                                <Text style={styles.iconText}>💡</Text>
-                            </TouchableOpacity>
-                        )}
+                        <TouchableOpacity
+                            style={[styles.iconButton, !isLoaded && styles.disabledButton]}
+                            onPress={showRewardedAd}
+                            disabled={!isLoaded}
+                        >
+                            <Text style={styles.iconText}>💡</Text>
+                            <View style={styles.adIcon}>
+                                <Text style={styles.adIconText}>🎬</Text>
+                            </View>
+                        </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.exitButton}
                             onPress={handleExit}
